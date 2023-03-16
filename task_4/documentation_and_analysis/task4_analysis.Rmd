@@ -527,12 +527,37 @@ popular_candy_Canada <- popular_candy_by_country %>%
 arrange(desc(sum_rating))
 
 popular_candy_Canada # 252 for any full sized candy bar, 230 for kitkat
-
-
 ```
 
+# Lastly let's do it for all other countries, I read it as the top candy for each country:
 
+```{r}
+popular_candy_by_country_other <- rating_count_full_candy_new_numeric %>% 
+  filter(!is.na(country)) %>%
+  filter(country != "USA" & country != "Canada" & country != "UK") %>% 
+  filter(rating == -1 | rating == 1 |rating == 0) %>% 
+  mutate(new_rating = rating * n ) %>% 
+group_by(country, candies) %>%
+ summarise(sum_rating = sum(new_rating)) %>% 
+arrange(desc(sum_rating))
 
+popular_candy_by_country_other
+```
+
+# Katrina thinks that it's all the other countries combined:
+
+```{r}
+popular_candy_total_minus_top3 <- rating_count_full_candy_new_numeric %>% 
+  filter(!is.na(country)) %>%
+  filter(country != "USA" & country != "Canada" & country != "UK") %>% 
+  filter(rating == -1 | rating == 1 |rating == 0) %>% 
+  mutate(new_rating = rating * n ) %>% 
+group_by(candies) %>%
+ summarise(sum_rating = sum(new_rating)) %>% 
+arrange(desc(sum_rating))
+
+popular_candy_total_minus_top3 # 65 for any full sized candy bars, 49 kitkats
+```
 
 
 
